@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nymdria - Cadastro</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #1b1f2f, #3d445c);
+      font-family: Arial, sans-serif;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background-color: #2a2f47;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      width: 100%;
+      max-width: 400px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+    }
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: none;
+      margin-top: 0.3rem;
+      background-color: #3f4663;
+      color: white;
+    }
+    button {
+      width: 100%;
+      margin-top: 1.5rem;
+      padding: 0.7rem;
+      background-color: #5a76ff;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #4761d8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Criar Conta - Nymdria</h1>
+    <form id="register-form">
+      <label for="username">Usuário</label>
+      <input type="text" id="username" required />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" required />
+
+      <label for="password">Senha</label>
+      <input type="password" id="password" required />
+
+      <button type="submit">Cadastrar</button>
+    </form>
+    <p id="message" style="margin-top:1rem;text-align:center;"></p>
+  </div>
+
+  <script>
+    document.getElementById("register-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      const response = await fetch("http://localhost:3000/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, password })
+      });
+
+      const result = await response.json();
+      const msg = document.getElementById("message");
+
+      if (result.success) {
+        msg.style.color = "lightgreen";
+        msg.textContent = "Cadastro realizado com sucesso!";
+      } else {
+        msg.style.color = "salmon";
+        msg.textContent = result.message || "Erro ao cadastrar.";
+      }
+    });
+  </script>
+</body>
+</html>
